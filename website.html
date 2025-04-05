@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Williams Windows & Gutters</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('logo.png') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #000, #333);
+      color: white;
+      padding: 30px;
+      font-size: 30px;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact {
+      margin-top: 25px;
+      font-size: 18px;
+    }
+
+    .button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background: #000;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background: #444;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 30px 30px 60px;
+      width: 60%;
+      max-width: 600px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
+    }
+
+    input, textarea, select {
+      width: 95%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #quoteDisplay {
+      font-size: 20px;
+      color: #007BFF;
+      margin-top: 15px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Williams Windows & Gutters</div>
+  <div class="container">
+    <h2>Professional Window & Gutter Cleaning in West Kelowna</h2>
+    <p>Providing top-quality window and gutter cleaning services for residential properties.</p>
+    <p>Reliable, affordable, and professional service you can trust!</p>
+    <div class="contact">
+      <p><strong>Call or Text:</strong> 250-826-8283</p>
+      <p><strong>Email:</strong> williamswindowsandgutters@gmail.com</p>
+    </div>
+    <button class="button" onclick="openModal()">Get a Free Quote</button>
+  </div>
+
+  <div id="quoteModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Get a Free Quote</h2>
+      <form action="https://formspree.io/f/myzenvnz" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="windows">Number of Window Panes:</label>
+        <input type="number" id="windows" name="windows" required oninput="calculateQuote()">
+
+        <label for="levels">Number of Levels (e.g. 1 for single story, 2 for two stories):</label>
+        <input type="number" id="levels" name="levels" required oninput="calculateQuote()">
+
+        <label for="includeGutters">Include Gutter Cleaning?</label>
+        <select id="includeGutters" name="includeGutters" required onchange="calculateQuote()">
+          <option value="no" selected>No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <label for="message">Additional Message:</label>
+        <textarea id="message" name="message" rows="4"></textarea>
+
+        <p><strong id="quoteDisplay">Estimated Quote: $0</strong></p>
+        <input type="submit" value="Send" class="button">
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('quoteModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('quoteModal').style.display = 'none';
+    }
+
+    function calculateQuote() {
+      const windows = parseInt(document.getElementById('windows').value) || 0;
+      const levels = parseInt(document.getElementById('levels').value) || 0;
+      const includeGutters = document.getElementById('includeGutters').value;
+
+      let quote = windows * 10;
+      if (includeGutters === 'yes') {
+        quote += 200 + (levels * 50);
+      }
+
+      document.getElementById('quoteDisplay').innerText = `Estimated Quote: $${quote}`;
+    }
+  </script>
+</body>
+</html>
